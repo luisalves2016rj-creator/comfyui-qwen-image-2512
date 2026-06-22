@@ -1,5 +1,8 @@
-# clean base image containing only comfyui, comfy-cli and comfyui-manager
 FROM runpod/worker-comfyui:5.8.4-base
+
+# Force ComfyUI to lock weights in VRAM and avoid offloading overhead
+ENV COMFYUI_ARGS="--gpu-only --highvram"
+
 
 # build-time tokens for gated downloads — never baked into final image.
 ARG HF_TOKEN=""
@@ -27,4 +30,10 @@ RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do \
 RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do \
     HF_TOKEN=$HF_TOKEN comfy model download --url 'https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors' --relative-path models/loras --filename 'Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors' && break; \
     if [ $i -eq 5 ]; then echo "LoRA download failed" >&2; exit 1; fi; \
+    SLEEP=$(echo $BACKOFFS | cut -d ' ' -f $i) && sleep $SLEEP; done
+
+# Download the Clothes Try-On LoRA from CivitAI
+RUN BACKOFFS="10 20 30 60 90" && for i in 1 2 3 4 5; do \
+    wget -O /comfyui/models/loras/clothes_tryon_qwen-edit-lora.safetensors "https://civitai.com/api/download/models/2196278" && break; \
+    if [ $i -eq 5 ]; then echo "Try-On LoRA download failed" >&2; exit 1; fi; \
     SLEEP=$(echo $BACKOFFS | cut -d ' ' -f $i) && sleep $SLEEP; done

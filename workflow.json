@@ -1,275 +1,228 @@
 {
-  "1": {
-    "inputs": {
-      "unet_name": "qwen_image_edit_2511_fp8mixed.safetensors",
-      "weight_dtype": "default"
-    },
-    "class_type": "UNETLoader",
-    "_meta": {
-      "title": "Load Diffusion Model"
-    }
-  },
-  "2": {
-    "inputs": {
-      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
-      "type": "qwen_image",
-      "device": "default"
-    },
-    "class_type": "CLIPLoader",
-    "_meta": {
-      "title": "Load CLIP"
-    }
-  },
   "3": {
     "inputs": {
-      "vae_name": "qwen_image_vae.safetensors"
-    },
-    "class_type": "VAELoader",
-    "_meta": {
-      "title": "Load VAE"
-    }
-  },
-  "4": {
-    "inputs": {
-      "clip": [
-        "2",
-        0
-      ],
-      "prompt": "A beautiful cinematic shot of a futuristic city at sunset, highly detailed, 8k resolution",
-      "vae": [
-        "3",
-        0
-      ],
-      "image": [
-        "19",
-        0
-      ]
-    },
-    "class_type": "TextEncodeQwenImageEdit",
-    "_meta": {
-      "title": "Positive Prompt"
-    }
-  },
-  "5": {
-    "inputs": {
-      "clip": [
-        "2",
-        0
-      ],
-      "text": "blurry, low quality, worst quality, deformed, bad anatomy, text, watermark"
-    },
-    "class_type": "CLIPTextEncode",
-    "_meta": {
-      "title": "Negative Prompt"
-    }
-  },
-  "6": {
-    "inputs": {
-      "width": 1024,
-      "height": 1024,
-      "batch_size": 1
-    },
-    "class_type": "EmptySD3LatentImage",
-    "_meta": {
-      "title": "Empty SD3 Latent Image"
-    }
-  },
-  "7": {
-    "inputs": {
-      "model": [
-        "1",
-        0
-      ],
-      "clip": [
-        "2",
-        0
-      ],
-      "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
-      "strength_model": 1.0,
-      "strength_clip": 1.0
-    },
-    "class_type": "LoraLoader",
-    "_meta": {
-      "title": "Load 4step LoRA"
-    }
-  },
-  "8": {
-    "inputs": {
-      "value": true
-    },
-    "class_type": "PrimitiveBoolean",
-    "_meta": {
-      "title": "Enable 4steps LoRA?"
-    }
-  },
-  "9": {
-    "inputs": {
-      "switch": [
-        "8",
-        0
-      ],
-      "on_false": [
-        "1",
-        0
-      ],
-      "on_true": [
-        "7",
-        0
-      ]
-    },
-    "class_type": "ComfySwitchNode",
-    "_meta": {
-      "title": "Switch (Model)"
-    }
-  },
-  "10": {
-    "inputs": {
-      "value": 4
-    },
-    "class_type": "PrimitiveInt",
-    "_meta": {
-      "title": "Steps (LoRA)"
-    }
-  },
-  "11": {
-    "inputs": {
-      "value": 20
-    },
-    "class_type": "PrimitiveInt",
-    "_meta": {
-      "title": "Steps (Standard)"
-    }
-  },
-  "12": {
-    "inputs": {
-      "switch": [
-        "8",
-        0
-      ],
-      "on_false": [
-        "11",
-        0
-      ],
-      "on_true": [
-        "10",
-        0
-      ]
-    },
-    "class_type": "ComfySwitchNode",
-    "_meta": {
-      "title": "Switch (Steps)"
-    }
-  },
-  "13": {
-    "inputs": {
-      "value": 1.0
-    },
-    "class_type": "PrimitiveFloat",
-    "_meta": {
-      "title": "CFG (LoRA)"
-    }
-  },
-  "14": {
-    "inputs": {
-      "value": 5.0
-    },
-    "class_type": "PrimitiveFloat",
-    "_meta": {
-      "title": "CFG (Standard)"
-    }
-  },
-  "15": {
-    "inputs": {
-      "switch": [
-        "8",
-        0
-      ],
-      "on_false": [
-        "14",
-        0
-      ],
-      "on_true": [
-        "13",
-        0
-      ]
-    },
-    "class_type": "ComfySwitchNode",
-    "_meta": {
-      "title": "Switch (CFG)"
-    }
-  },
-  "16": {
-    "inputs": {
-      "model": [
-        "9",
-        0
-      ],
-      "seed": 42,
-      "steps": [
-        "12",
-        0
-      ],
-      "cfg": [
-        "15",
-        0
-      ],
+      "seed": 925369653968744,
+      "steps": 4,
+      "cfg": 1.0,
       "sampler_name": "euler",
       "scheduler": "simple",
+      "denoise": 1.0,
+      "model": [
+        "75",
+        0
+      ],
       "positive": [
-        "4",
+        "76",
         0
       ],
       "negative": [
-        "5",
+        "77",
         0
       ],
       "latent_image": [
-        "6",
+        "88",
         0
-      ],
-      "denoise": 1.0
+      ]
     },
     "class_type": "KSampler",
     "_meta": {
       "title": "KSampler"
     }
   },
-  "17": {
+  "8": {
     "inputs": {
       "samples": [
-        "16",
+        "3",
         0
       ],
       "vae": [
-        "3",
+        "39",
         0
       ]
     },
     "class_type": "VAEDecode",
     "_meta": {
-      "title": "VAE Decode"
+      "title": "VAEDecode"
     }
   },
-  "18": {
+  "37": {
     "inputs": {
+      "weight_dtype": "default",
+      "unet_name": "qwen_image_edit_2511_fp8mixed.safetensors"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNETLoader"
+    }
+  },
+  "38": {
+    "inputs": {
+      "type": "qwen_image",
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "CLIPLoader"
+    }
+  },
+  "39": {
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAELoader"
+    }
+  },
+  "60": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
       "images": [
-        "17",
+        "8",
         0
-      ],
-      "filename_prefix": "Qwen-Image-Edit"
+      ]
     },
     "class_type": "SaveImage",
     "_meta": {
-      "title": "Save Image"
+      "title": "SaveImage"
     }
   },
-  "19": {
+  "66": {
     "inputs": {
-      "image": "input_image.png"
+      "shift": 3.0,
+      "model": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "75": {
+    "inputs": {
+      "strength": 1.0,
+      "model": [
+        "66",
+        0
+      ]
+    },
+    "class_type": "CFGNorm",
+    "_meta": {
+      "title": "CFGNorm"
+    }
+  },
+  "76": {
+    "inputs": {
+      "prompt": "put the clothes on the left onto the person on the right.",
+      "clip": [
+        "38",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ],
+      "image": [
+        "93",
+        0
+      ]
+    },
+    "class_type": "TextEncodeQwenImageEdit",
+    "_meta": {
+      "title": "TextEncodeQwenImageEdit (Positive)"
+    }
+  },
+  "77": {
+    "inputs": {
+      "prompt": " ",
+      "clip": [
+        "38",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ],
+      "image": [
+        "93",
+        0
+      ]
+    },
+    "class_type": "TextEncodeQwenImageEdit",
+    "_meta": {
+      "title": "TextEncodeQwenImageEdit (Negative)"
+    }
+  },
+  "78": {
+    "inputs": {
+      "image": "input_image.png",
+      "upload": "image"
     },
     "class_type": "LoadImage",
     "_meta": {
-      "title": "Load Input Image"
+      "title": "LoadImage"
+    }
+  },
+  "88": {
+    "inputs": {
+      "pixels": [
+        "93",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAEEncode"
+    }
+  },
+  "89": {
+    "inputs": {
+      "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+      "strength_model": 1.0,
+      "model": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly (Lightning)"
+    }
+  },
+  "93": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1.0,
+      "resolution_steps": 64,
+      "image": [
+        "78",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "ImageScaleToTotalPixels"
+    }
+  },
+  "94": {
+    "inputs": {
+      "lora_name": "clothes_tryon_qwen-edit-lora.safetensors",
+      "strength_model": 1.0,
+      "model": [
+        "89",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly (TryOn)"
     }
   }
 }
